@@ -8,14 +8,15 @@ import Image from "next/image";
 import { getSimilarMoviesById } from "@/services/movies/getSimilarMoviesById";
 import { MovieCard } from "@/components/MovieCard/MovieCard";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { MovieDetail } from "@/lib/types";
 
 const MovieDetailsPage = () => {
   const router = useRouter();
   const params = useParams();
   const movieId = params?.id as string;
 
-  const [movie, setMovie] = useState<any>(null);
-  const [similarMovies, setSimilarMovies] = useState<any[]>([]);
+  const [movie, setMovie] = useState<MovieDetail | null>(null);
+  const [similarMovies, setSimilarMovies] = useState<MovieDetail[]>([]);
   const [loading, setLoading] = useState(false);
 
   const [favorites, setFavorites] = useLocalStorage<number[]>("favorites", []);
@@ -130,7 +131,7 @@ const MovieDetailsPage = () => {
               overview={sm.overview}
               releaseDate={sm.release_date}
               rating={sm.vote_average}
-              posterPath={sm.poster_path}
+              posterPath={sm.poster_path ?? ""}
             />
           ))}
         </div>

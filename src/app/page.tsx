@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { MovieCard } from "@/components/MovieCard/MovieCard";
 import { getHomeMovies } from "@/services/movies/getHomeMovies";
 import { useRouter } from "next/navigation";
+import { MovieDetail } from "@/lib/types";
 
 export default function Home() {
   const [movies, setMovies] = useState<{
-    upcoming: any[];
-    nowPlaying: any[];
-    trending: any[];
-    randomMovie: any;
+    upcoming: MovieDetail[];
+    nowPlaying: MovieDetail[];
+    trending: MovieDetail[];
+    randomMovie: MovieDetail | null;
   }>({
     upcoming: [],
     nowPlaying: [],
@@ -80,7 +81,13 @@ export default function Home() {
   );
 }
 
-const Section = ({ title, movies }: { title: string; movies: any[] }) => (
+const Section = ({
+  title,
+  movies,
+}: {
+  title: string;
+  movies: MovieDetail[];
+}) => (
   <section>
     <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-zinc-900 dark:text-white">
       {title}
@@ -94,7 +101,7 @@ const Section = ({ title, movies }: { title: string; movies: any[] }) => (
           overview={movie.overview}
           releaseDate={movie.release_date}
           rating={movie.vote_average}
-          posterPath={movie.poster_path}
+          posterPath={movie.poster_path ?? ""}
         />
       ))}
     </div>

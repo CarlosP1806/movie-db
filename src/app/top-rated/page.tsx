@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { getTopRatedMovies } from "@/services/movies/getTopRatedMovies";
 import { MovieCard } from "@/components/MovieCard/MovieCard";
 import { PaginationControls } from "@/components/PaginationControls/PaginationControls";
+import { MovieDetail } from "@/lib/types";
 
 const TopRatedPage = () => {
   const [loading, setLoading] = useState(false);
-  const [movies, setMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<MovieDetail[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -59,7 +60,7 @@ const TopRatedPage = () => {
                 overview={movie.overview}
                 releaseDate={movie.release_date}
                 rating={movie.vote_average}
-                posterPath={movie.poster_path}
+                posterPath={movie.poster_path ?? ""}
               />
             ))}
           </div>

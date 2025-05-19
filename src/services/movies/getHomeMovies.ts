@@ -1,11 +1,11 @@
+import { MovieDetail } from "@/lib/types";
 import api from "../api";
-import { getMovieById } from "./getMovieById";
 
 export const getHomeMovies = async () => {
-  let upcoming: any[] = [];
-  let nowPlaying: any[] = [];
-  let trending: any[] = [];
-  let randomMovie: any = null;
+  let upcoming: MovieDetail[] = [];
+  let nowPlaying: MovieDetail[] = [];
+  let trending: MovieDetail[] = [];
+  let randomMovie: MovieDetail | null = null;
 
   const endpoints = {
     upcoming: "/movie/upcoming?language=en-US&page=1",

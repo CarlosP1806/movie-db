@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { getMovieById } from "@/services/movies/getMovieById";
 import { MovieCard } from "@/components/MovieCard/MovieCard";
+import { MovieDetail } from "@/lib/types";
 
 const MyFavoritesPage = () => {
   const [favorites] = useLocalStorage<number[]>("favorites", []);
-  const [movies, setMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<MovieDetail[]>([]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -32,7 +33,7 @@ const MyFavoritesPage = () => {
               overview={movie.overview}
               releaseDate={movie.release_date}
               rating={movie.vote_average}
-              posterPath={movie.poster_path}
+              posterPath={movie.poster_path ?? ""}
             />
           ))}
         </div>
