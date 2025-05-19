@@ -18,16 +18,30 @@ export default function Home() {
     randomMovie: null,
   });
 
+  const [loading, setLoading] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
     const fetchMovies = async () => {
+      setLoading(true);
       const data = await getHomeMovies();
       setMovies(data);
+      setLoading(false);
     };
 
     fetchMovies();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl text-zinc-700 dark:text-zinc-300">
+          Loading movies...
+        </p>
+      </div>
+    );
+  }
 
   const hero = movies.randomMovie;
 
