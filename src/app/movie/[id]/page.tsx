@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Heart, HeartOff } from "lucide-react";
 import { getMovieById } from "@/services/movies/getMovieById";
 import Image from "next/image";
 import { getSimilarMoviesById } from "@/services/movies/getSimilarMoviesById";
 import { MovieCard } from "@/components/MovieCard/MovieCard";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const MovieDetailsPage = () => {
   const router = useRouter();
@@ -16,6 +17,9 @@ const MovieDetailsPage = () => {
   const [movie, setMovie] = useState<any>(null);
   const [similarMovies, setSimilarMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const [favorites, setFavorites] = useLocalStorage<number[]>("favorites", []);
+  const isFavorite = favorites.includes(Number(movieId));
 
   useEffect(() => {
     if (!movieId) return;
@@ -31,6 +35,15 @@ const MovieDetailsPage = () => {
 
     fetchDetails();
   }, [movieId]);
+
+  const toggleFavorite = () => {
+    const id = Number(movieId);
+    if (favorites.includes(id)) {
+      setFavorites(favorites.filter((fid) => fid !== id));
+    } else {
+      setFavorites([...favorites, id]);
+    }
+  };
 
   if (loading) return <p className="p-10">Loading movie details...</p>;
   if (!movie) return <p className="p-10 text-red-500">No movie found.</p>;
@@ -58,6 +71,17 @@ const MovieDetailsPage = () => {
           <h1 className="text-4xl font-bold text-zinc-900 dark:text-white">
             {movie.title}
           </h1>
+          <button
+            onClick={toggleFavorite}
+            className="text-red-500 hover:text-red-700 transition cursor-pointer"
+            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          >
+            {isFavorite ? (
+              <HeartOff className="w-6 h-6" />
+            ) : (
+              <Heart className="w-6 h-6" />
+            )}
+          </button>
           <p className="text-zinc-700 dark:text-zinc-300 text-lg">
             {movie.overview}
           </p>
